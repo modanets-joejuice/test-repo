@@ -1,0 +1,56 @@
+---
+description: Docker development environment setup and commands
+alwaysApply: true
+---
+
+# Docker Development Environment
+
+This project runs in Docker using docker-compose with two services:
+
+- **app**: PHP 8.5 CLI with Composer (`docker/app/Dockerfile`)
+- **mysql**: MySQL 8 (default database: `app`, root password: `root`)
+
+## Cursor Cloud Automation
+
+When running as a Cursor cloud agent, the environment is pre-configured:
+
+- Docker daemon is started automatically (`environment.json` → `start`)
+- `docker compose up -d` runs automatically (`environment.json` → `install`)
+- Containers are already running — do NOT run `make up`, `make down`, or `make build`
+- **You must run `make install` before running tests or any PHP commands**
+
+Secrets (`MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`) should be configured in the Cursor Secrets tab at cursor.com/dashboard/cloud-agents. If not set, defaults apply (`root` / `app`).
+
+## Executing Commands
+
+Use Makefile targets to run commands:
+
+```bash
+make install    # Install Composer dependencies (run this first)
+make test       # Run PHPUnit tests
+make bash       # Shell into the app container
+```
+
+For arbitrary commands, use `docker compose exec app <command>`. Never run `php`, `composer`, or `vendor/bin/phpunit` directly on the host.
+
+## Local Development (Makefile)
+
+For local development outside of Cursor cloud, use the Makefile:
+
+```bash
+make up      # Start containers
+make down    # Stop containers
+make bash    # Shell into the app container
+make test    # Run PHPUnit tests
+make build   # Rebuild images
+```
+
+## Database Connection
+
+From inside the app container, MySQL is available at:
+
+- Host: `mysql`
+- Port: `3306`
+- Database: `MYSQL_DATABASE` (default: `app`)
+- User: `root`
+- Password: `MYSQL_ROOT_PASSWORD` (default: `root`)
