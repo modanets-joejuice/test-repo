@@ -45,7 +45,8 @@ RUN update-alternatives --set iptables /usr/sbin/iptables-legacy && \
 # CONFIG UBUNTU USER
 ########################################################
 
-RUN echo 'PasswordAuthentication no\nChallengeResponseAuthentication no\nUsePAM no' > /etc/ssh/sshd_config.d/disable_password_auth.conf
+RUN mkdir -p /etc/ssh/sshd_config.d && \
+    echo 'PasswordAuthentication no\nChallengeResponseAuthentication no\nUsePAM no' > /etc/ssh/sshd_config.d/disable_password_auth.conf
 
 RUN id -u ubuntu &>/dev/null || useradd -m -s /bin/bash ubuntu
 RUN groupadd -f docker && usermod -aG docker ubuntu
