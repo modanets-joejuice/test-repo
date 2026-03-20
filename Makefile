@@ -1,6 +1,6 @@
 CONTAINER_NAME=test-repo
-export USER_ID=$(shell id -u)
-export GROUP_ID=$(shell id -g)
+USER_ID=$(shell id -u)
+GROUP_ID=$(shell id -g)
 
 export MYSQL_ROOT_PASSWORD ?= root
 export MYSQL_DATABASE ?= app
@@ -18,7 +18,7 @@ install:
 	docker compose exec app composer install --no-interaction --prefer-dist
 
 bash:
-	docker compose exec app bash
+	docker compose exec -u $(USER_ID):$(GROUP_ID) app bash
 
 test:
 	docker compose exec app vendor/bin/phpunit
