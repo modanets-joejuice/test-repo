@@ -50,6 +50,7 @@ RUN mkdir -p /etc/ssh/sshd_config.d && \
 
 RUN id -u ubuntu &>/dev/null || useradd -m -s /bin/bash ubuntu
 RUN groupadd -f docker && usermod -aG docker ubuntu
+RUN apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*
 RUN usermod -aG sudo ubuntu
 RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 RUN echo "ubuntu:ubuntu" | chpasswd
