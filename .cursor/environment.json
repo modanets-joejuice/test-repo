@@ -4,5 +4,5 @@
     "context": ".."
   },
   "start": "sudo service docker start",
-  "install": "docker compose up -d --wait"
+  "install": "sudo service docker start && sleep 3 && docker compose up -d --wait"
 }
